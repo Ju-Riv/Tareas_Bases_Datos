@@ -1,7 +1,7 @@
 
 -- TAREA 1
 
--- ¿Cuál es el promedio de tiempo entre cada pago por cliente de la BD Sakila?
+-- Â¿CuÃ¡l es el promedio de tiempo entre cada pago por cliente de la BD Sakila?
 select * from customer; 
 select * from payment; 
 
@@ -47,7 +47,7 @@ from tiempos_pago tp
 group by customer_id 
 order by customer_id;
 
--- Extraer días y horas de promedio de tiempo
+-- Extraer dÃ­as y horas de promedio de tiempo
 with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(order by c.customer_id, p.payment_date) as no_pago
 						from customer c inner join payment p on(c.customer_id = p.customer_id)),
 			
@@ -68,7 +68,7 @@ select customer_id, extract('days' from tiempo_prom_pagos) dias, extract('hours'
 from prom_pagos;
 
 -- QUERY FINAL
--- Redondear promedio de tiempo de pago a días --> human readable
+-- Redondear promedio de tiempo de pago a dÃ­as --> human readable
 with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(order by c.customer_id, p.payment_date) as no_pago
 						from customer c inner join payment p on(c.customer_id = p.customer_id)),
 			
@@ -97,9 +97,9 @@ select c.customer_id, concat(c.first_name, ' ', c.last_name) customer_name,
 from customer c inner join dias_horas dh on (c.customer_id = dh.customer_id)
 order by c.customer_id;
 				   
--- ¿Sigue una distribución normal?	
+-- Â¿Sigue una distribuciÃ³n normal?	
 
--- Encontrar media y desviación estándar de los datos
+-- Encontrar media y desviaciÃ³n estÃ¡ndar de los datos
 with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(order by c.customer_id, p.payment_date) as no_pago
 						from customer c inner join payment p on(c.customer_id = p.customer_id)),
 			
@@ -131,7 +131,7 @@ with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(
 select avg(prom_dias_pago) as media, stddev(prom_dias_pago) as desv_estandar 
 from prom_pagos_2;
 
--- Normalización de promedios 
+-- NormalizaciÃ³n de promedios 
 with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(order by c.customer_id, p.payment_date) as no_pago
 						from customer c inner join payment p on(c.customer_id = p.customer_id)),
 			
@@ -168,7 +168,7 @@ from prom_pagos_2 pp , media_dve md
 order by prom_ajuste;
 
 
--- Clasificación por intervalos de datos ajustados
+-- ClasificaciÃ³n por intervalos de datos ajustados
 with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(order by c.customer_id, p.payment_date) as no_pago
 						from customer c inner join payment p on(c.customer_id = p.customer_id)),
 			
@@ -220,7 +220,7 @@ from datos_ajustados
 order by clase;
 
 -- Agrupar a los datos por intervalos que particionen a (-\inf, \inf) 
--- De este último resultado podemos concluir que nuestros datos normalizados NO siguen una distribución nomal estándar
+-- De este Ãºltimo resultado podemos concluir que nuestros datos normalizados NO siguen una distribuciÃ³n nomal estÃ¡ndar
 with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(order by c.customer_id, p.payment_date) as no_pago
 						from customer c inner join payment p on(c.customer_id = p.customer_id)),
 			
@@ -276,9 +276,9 @@ from intervalos
 group by clase;
 
 
--- ¿Qué tanto difiere ese promedio del tiempo entre rentas por cliente?
+-- Â¿QuÃ© tanto difiere ese promedio del tiempo entre rentas por cliente?
 
--- Creación tabla de promedio rentas por cliente
+-- CreaciÃ³n tabla de promedio rentas por cliente
 with rentas_clientes as (select c.customer_id, r.rental_date, row_number() over(order by c.customer_id, r.rental_date) as no_renta
 						 from customer c inner join rental r on(c.customer_id = r.customer_id)),
 			
@@ -308,7 +308,7 @@ from customer c inner join dias_horas dh on (c.customer_id = dh.customer_id)
 order by c.customer_id;
 
 -- QUERY FINAL
--- Comparación de promedio de rentas vs. promedio de pagos por cliente
+-- ComparaciÃ³n de promedio de rentas vs. promedio de pagos por cliente
 with pagos_clientes as (select c.customer_id, p.payment_date, row_number() over(order by c.customer_id, p.payment_date) as no_pago
 						from customer c inner join payment p on(c.customer_id = p.customer_id)),
 			
