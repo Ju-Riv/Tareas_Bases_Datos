@@ -1,6 +1,6 @@
 -- TAREA
 
--- Creación de Tabla Cliente
+-- CreaciÃ³n de Tabla Cliente
 create table cliente (
 id_cliente numeric(4) constraint pk_cliente primary key,
 nombres varchar(100) not null, 
