@@ -1,6 +1,6 @@
 -- TAREA
 
--- InserciÛn de datos en Tabla Cliente
+-- Inserci√≥n de datos en Tabla Cliente
 select * from cliente c
 
 insert into cliente 
@@ -25,27 +25,27 @@ values
 ('Gamora', null, 'thefiercestwomaninthegalaxy@thanos.'),
 ('Rocket', null, 'shhhhhhhh@darknet.ru');
 
--- Construir un query que regrese emails inv·lidos
+-- Construir un query que regrese emails inv√°lidos
 
 -- Si consideramos suficiente garantizar que nuestro string tenga una estructura de la forma: 
--- nombre_usuario@organizaciÛn.tipo
--- El siguiente query regresar· una lista con correos inv·lidos
-select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv·lidos" from cliente 
+-- nombre_usuario@organizaci√≥n.tipo
+-- El siguiente query regresar√° una lista con correos inv√°lidos
+select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv√°lidos" from cliente 
 where correo not like '_%@__%.__%';
 
--- Por el contrario, si consideramos que es necesario hacer una lista de todas las terminaciones v·lidas,
--- el query que sigue funcionar·. 
+-- Por el contrario, si consideramos que es necesario hacer una lista de todas las terminaciones v√°lidas,
+-- el query que sigue funcionar√°. 
 -- Sin embargo, en este caso funciona bien porque tenemos pocas terminaciones posibles. 
--- Pero si quisiÈramos replicar este query con muchas m·s terminaciones no creo que sea muy eficiente
-select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv·lidos" from cliente 
+-- Pero si quisi√©ramos replicar este query con muchas m√°s terminaciones no creo que sea muy eficiente
+select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv√°lidos" from cliente 
 where (correo not like '_%@__%.com' and correo not like '_%@__%.ru' and correo not like '_%@__%.gov' 
 	  and correo not like '_%@__%.co' and correo not like '_%@__%.or' and correo not like '_%@__%.org');
 
--- An·logamente estas son las opciones para regresar una lista con correos inv·lidos
-select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv·lidos" from cliente 
+-- An√°logamente estas son las opciones para regresar una lista con correos inv√°lidos
+select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv√°lidos" from cliente 
 where correo like '_%@__%.__%';
 
-select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv·lidos" from cliente 
+select id_cliente, concat(nombres, ' ', apellidos) as "cliente", correo as "Correos Inv√°lidos" from cliente 
 where (correo like '_%@__%.com' or correo like '_%@__%.ru' or correo like '_%@__%.gov' 
 	  or correo like '_%@__%.co' or correo like '_%@__%.or' or correo like '_%@__%.org');
 	 
