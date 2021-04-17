@@ -1,0 +1,36 @@
+-- Para cada cliente calcular el promedio mensual de la diferencia entre el monto total de una orden en el tiempo t y t-1
+select * from order_details;
+select * from orders; 
+select * from customers; 
+
+-- Encontrar los montos totales para los tiempo t, t-1 de cada cliente
+select c.customer_id, c.company_name, o.order_date, (od.quantity * od.unit_price) monto_total,
+	   lag((od.quantity * od.unit_price)::numeric, 1, 0.0) over w as monto_total_anterior
+from order_details od inner join orders o on (od.order_id = o.order_id)
+					  		 inner join customers c on (o.customer_id = c.customer_id) 
+window w as (partition by c.customer_id order by o.order_date asc);
+
+-- Encontrar las diferencias entre los montos totales de los tiempos t y t-1
+with montos_totales as (select c.customer_id, c.company_name, o.order_date, (od.quantity * od.unit_price) monto_total,
+	   				lag((od.quantity * od.unit_price)::numeric, 1, 0.0) over w as monto_total_anterior
+					from order_details od inner join orders o on (od.order_id = o.order_id)
+					  					  inner join customers c on (o.customer_id = c.customer_id) 
+					window w as (partition by c.customer_id order by o.order_date asc))
+					
+select customer_id, company_name, order_date, (monto_total - monto_total_anterior) dif_montos
+from montos_totales; 
+
+-- QUERY FINAL 
+with montos_totales as (select c.customer_id, c.company_name, o.order_date, (od.quantity * od.unit_price) monto_total,
+	   				lag((od.quantity * od.unit_price)::numeric, 1, 0.0) over w as monto_total_anterior
+					from order_details od inner join orders o on (od.order_id = o.order_id)
+					  					  inner join customers c on (o.customer_id = c.customer_id) 
+					window w as (partition by c.customer_id order by o.order_date asc)), 
+					
+	dif_montos as (select customer_id, company_name, order_date, (monto_total - monto_total_anterior) dif_montos
+				   from montos_totales) 
+
+select customer_id, company_name, extract(year from order_date) año, extract(month from order_date) mes, avg(dif_montos) prom_mensual_deltas
+from dif_montos
+group by customer_id, company_name, extract(year from order_date), extract(month from order_date)
+order by customer_id, año asc, mes asc; 
